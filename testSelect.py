@@ -11,7 +11,7 @@ db = mysql.connector.connect(
 )
 
 cursor = db.cursor()
-sql="select * from student"
+sql="select * from patient"
 
 cursor.execute(sql)
 result = cursor.fetchall()

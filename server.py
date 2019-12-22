@@ -12,13 +12,13 @@ patients=[
 nextID=4
 
 
- #"http://127.0.0.1:5000/hospital"
-@app.route('/hospital')
+ #"http://127.0.0.1:5000/hospital2"
+@app.route('/hospital2')
 def getAll():
      return jsonify(patients)
 
 #curl "http://127.0.0.1:5000/hospital/2"
-@app.route('/hospital/<int:id>')
+@app.route('/hospital2/<int:id>')
 def findByID(id):
     foundPatients = list(filter(lambda t: t['id']== id, patients))
     if len(foundPatients)== 0:
@@ -26,13 +26,13 @@ def findByID(id):
 
     return jsonify(foundPatients[0])
 
-#curl -i -H "Content-Type:application/json" -X POST -d "{\"Name\":\"Mary\",\"Symptoms\":\"Fiddlers Elbow\",\"DoctorId\":104}" http://127.0.0.1:5000/hospital
-@app.route('/hospital', methods=['POST'])
+#curl -i -H "Content-Type:application/json" -X POST -d "{\"Name\":\"Mary\",\"Symptoms\":\"Fiddlers Elbow\",\"DoctorId\":104}" http://127.0.0.1:5000/hospital2
+@app.route('/hospital2', methods=['POST'])
 def create():
     global nextID
     if not request.json:
         abort(400)
-        #other checking
+        
     patient = {
         "id": nextID,
         "Name": request.json['Name'],
@@ -43,8 +43,8 @@ def create():
     patients.append(patient)
     return jsonify(patient)
 
-#curl -i -H "Content-Type:application/json" -X PUT -d "{\"Name\":\"Mary\",\"Symptoms\":\"Broken Arm\",\"DoctorId\":104}" http://127.0.0.1:5000/hospital
-@app.route('/hospital/<int:id>', methods=['PUT'])
+#curl -i -H "Content-Type:application/json" -X PUT -d "{\"Name\":\"Mary\",\"Symptoms\":\"Broken Arm\",\"DoctorId\":104}" http://127.0.0.1:5000/hospital2
+@app.route('/hospital2/<int:id>', methods=['PUT'])
 def update(id):
     foundpatients = list(filter(lambda t: t['id']== id, patients))
     if (len(foundpatients)==0):
@@ -65,8 +65,8 @@ def update(id):
 
     return "in update for id"+str(id)
 
-#curl -X DELETE "http://127.0.0.1:5000/hospital/1"
-@app.route('/hospital/<int:id>', methods=['DELETE'])
+#curl -X DELETE "http://127.0.0.1:5000/hospital1/1"
+@app.route('/hospital2/<int:id>', methods=['DELETE'])
 def delete(id):
     foundPatients = list(filter(lambda t: t['id']== id, patients))
     if (len(foundPatients) == 0):
@@ -74,18 +74,13 @@ def delete(id):
     patients.remove(foundPatients[0])
     return jsonify({"done":True})
 
-#curl -i -H "Authorization: token 01e25055726d94d79756dc9f3d377722251c6a627564e8ad5ae5c9fac03dbb7c" https://127.0.0.1:5000/hospital
-apikey = '01e25055726d94d79756dc9f3d377722251c6a627564e8ad5ae5c9fac03dbb7c'
-url = 'http://127.0.0.1:5000/hospital'
-filename = "repo.json"
+@app.errorhandler(404)
+def not_found404(error):
+    return make_response( jsonify( {'error':'Not found' }), 404)
 
-response = requests.get(url, auth=('token', apikey))
-
-repoJSON = response.json()
-
-file = open(filename, 'w')
-
-json.dump(repoJSON, file, indent=4)
+@app.errorhandler(400)
+def not_found400(error):
+    return make_response( jsonify( {'error':'Bad Request' }), 400)
 
 if __name__=='__main__':
     app.run(debug=True)
