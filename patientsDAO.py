@@ -1,5 +1,5 @@
 import mysql.connector
-class StudentDAO:
+class patientsDAO:
     db=""
     def __init__(self):
         self.db = mysql.connector.connect(

@@ -1,13 +1,13 @@
 <html>
     <head>
-        <title> view Patient</title>
+        <title> View Patient</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     </head>
-    <body>
-        <h1>Patient</h1>
-        <div> <button id="showCreateButton" onclick="showCreate()">Create</button></div>
+    <body style="background-color: powderblue">
+        <p><h1 style="color:red" align="center">Patient Database - Galway General Hospital</h1></p>
+        <div> <button  id="showCreateButton" onclick="showCreate()">Create</button></div>
         <div>
-            <table class="table" id="patientTable">
+            <table style="background-color:rgb(173, 173, 173)" class="table" id="patientTable">
                 <tr>
                         <th>id</th>
                         <th>Name</th>
@@ -253,7 +253,6 @@
                 console.log("error: "+status+" msg:"+error);
             }
         });
-    
     
     </script>
 </html>
